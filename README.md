@@ -1,4 +1,4 @@
-# python-template
+# fastapi-base-template
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
@@ -7,7 +7,7 @@
 [![Pre-commit: enabled](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white&style=flat)](https://github.com/pre-commit/pre-commit)
 
 ## Description
-Base python template for projects
+Fastapi template
 
 ## Setup
 Init virtualenv, install requirements, install pre-commit hooks
