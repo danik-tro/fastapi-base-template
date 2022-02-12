@@ -10,25 +10,27 @@ setup: virtual_env ## Project setup
 	. ve/bin/activate; pip install --no-cache --exists-action w -Ur requirements/dev.txt
 	. ve/bin/activate; pre-commit install
 
-run: virtual_env ## Run project
-	. ve/bin/activate; python main.py
+run: ## Run project
+	. ve/bin/activate; uvicorn main:app --port ${PORT} --host ${HOST}
 
+run_prod: ## Run production
+	. ve/bin/activate; gunicorn main:app --workers ${WORKERS} --worker-class uvicorn.workers.UvicornWorker --bind ${HOST}:${PORT}
 
 # Testing commands
-test: virtual_env  ## Run tests
+test:  ## Run tests
 	. ve/bin/activate; python -m pytest -v
 
-coverage: virtual_env  ## Run tests with coverage - load config from tests/config.yaml
+coverage:  ## Run tests with coverage - load config from tests/config.yaml
 	. ve/bin/activate; python -m pytest -vv --cov=application tests/ --no-cov-on-fail --tb=no tests/
 
 # Code style
-lint: virtual_env ## Run linter (flake8)
+lint: ## Run linter (flake8)
 	. ve/bin/activate; flake8
 
-mypy: virtual_env ## Run mypy
+mypy: ## Run mypy
 	. ve/bin/activate; mypy ./application
 
-black: virtual_env ## Run isort and black
+black: ## Run isort and black
 	. ve/bin/activate; isort .; black .
 
 # Clean commands
