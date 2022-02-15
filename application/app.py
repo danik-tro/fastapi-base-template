@@ -7,7 +7,9 @@ from application.settings import AppSettings, get_settings
 
 def create_app(settings: AppSettings = get_settings()) -> FastAPI:
     app = FastAPI(debug=settings.DEBUG, title=settings.APPLICATION_NAME)
-    app.include_router(api_router, prefix="/v1")
+    root_path = settings.APPLICATION_NAME
+
+    app.include_router(api_router, prefix=f"/{root_path}/v1")
 
     # Set all CORS enabled origins
     if settings.BACKEND_CORS_ORIGINS:

@@ -2,50 +2,48 @@
 		run \
 		test \
 
-virtual_env: ## Alias for virtual environment
+virtual_env:
 	python -m venv ve
 
-setup: virtual_env ## Project setup
+setup: virtual_env
 	. ve/bin/activate; pip install wheel setuptools
 	. ve/bin/activate; pip install --no-cache --exists-action w -Ur requirements/dev.txt
 	. ve/bin/activate; pre-commit install
 
-run: ## Run project
+setup_prod: virtual_env
+	. ve/bin/activate; pip install wheel setuptools
+	. ve/bin/activate; pip install --no-cache --exists-action w -Ur requirements/production.txt
+
+run:
 	. ve/bin/activate; uvicorn main:app --port ${PORT} --host ${HOST}
 
-run_prod: ## Run production
+run_prod:
 	. ve/bin/activate; gunicorn main:app --workers ${WORKERS} --worker-class uvicorn.workers.UvicornWorker --bind ${HOST}:${PORT}
 
-# Testing commands
-test:  ## Run tests
+test:
 	. ve/bin/activate; python -m pytest -v
 
-coverage:  ## Run tests with coverage - load config from tests/config.yaml
+coverage:
 	. ve/bin/activate; python -m pytest -vv --cov=application tests/ --no-cov-on-fail --tb=no tests/
 
-# Code style
-lint: ## Run linter (flake8)
+lint:
 	. ve/bin/activate; flake8
 
-mypy: ## Run mypy
+mypy:
 	. ve/bin/activate; mypy ./application
 
-black: ## Run isort and black
+black:
 	. ve/bin/activate; isort .; black .
 
-# Clean commands
-clean: clean-build clean-pyc clean-test ## Remove all build, test, coverage and Python artifacts
-clean-build: ## Remove build artifacts
+clean:
 	rm -fr build/
 	rm -fr dist/
 	rm -fr .eggs/
 	find . -name '*.egg-info' -exec rm -fr {} +
 	find . -name '*.egg' -exec rm -f {} +
-clean-pyc: ## Remove Python file artifacts
 	find . -name '*.pyc' -exec rm -f {} +
 	find . -name '*.pyo' -exec rm -f {} +
 	find . -name '*~' -exec rm -f {} +
 	find . -name '__pycache__' -exec rm -fr {} +
-clean-test: ## Remove test and coverage artifacts
 	rm -f .coverage
 	rm -fr htmlcov/
